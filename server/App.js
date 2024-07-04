@@ -27,6 +27,8 @@ app.use('/api/v1/user', userRouter);
 app.use('/api/v1/farmer', farmerRouter);
 app.use('/api/v1/admin', adminRouter);
 
-dbConnect();
+//Listen to server only when db connected
+dbConnect()
+
 
 export default app;
