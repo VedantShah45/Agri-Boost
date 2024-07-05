@@ -1,8 +1,25 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import '../CSS/Navbar.css'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 
 const Navbar = () => {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const navigate = useNavigate();
+    const checkLogin = () => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            setIsLoggedIn(true);
+        }
+    };
+    useEffect(() => {
+        checkLogin();
+    }, [checkLogin]);
+    const handleLogOut = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('role');
+        setIsLoggedIn(false);
+        navigate('/');
+    };
     return (
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
             <div className="container-fluid">
@@ -16,9 +33,17 @@ const Navbar = () => {
                         <li className="nav-item">
                             <NavLink className="nav-link active" aria-current="page" to='/'>HOME</NavLink>
                         </li>
-                        <li className="nav-item">
-                            <NavLink className="nav-link" to='/login'>LOGIN</NavLink>
-                        </li>
+                        {
+                            isLoggedIn ? (
+                                <li className="nav-item">
+                                    <NavLink className="nav-link" to='/' onClick={handleLogOut}>LOGOUT</NavLink>
+                                </li>
+                            ) : (
+                                <li className="nav-item">
+                                    <NavLink className="nav-link" to='/login'>LOGIN</NavLink>
+                                </li>
+                            )
+                        }
                         <li className="nav-item">
                             <NavLink className="nav-link" to='/register'>REGISTER</NavLink>
                         </li>
@@ -34,6 +59,13 @@ const Navbar = () => {
                         <li className="nav-item">
                             <NavLink className="nav-link" to='/policy'>POLICY</NavLink>
                         </li>
+                        {
+                            isLoggedIn ? (
+                                <li className="nav-item">
+                                    <NavLink className="nav-link" to='/profile'>PROFILE</NavLink>
+                                </li>
+                            ) : (<></>)
+                        }
                     </ul>
                     <form className="d-flex" role="search">
                         <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />

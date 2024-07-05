@@ -10,6 +10,7 @@ import Register from './pages/Register'
 import Shop from './pages/Shop'
 import Login from './pages/Login'
 import Policy from './pages/Policy'
+import Profile from './pages/Profile'
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
         <Route path='/shop' element={<Shop />} />
         <Route path='/login' element={<Login />} />
         <Route path='/policy' element={<Policy />} />
+        <Route path='/profile' element={<Profile />} />
       </Routes>
       <Footer />
     </BrowserRouter>

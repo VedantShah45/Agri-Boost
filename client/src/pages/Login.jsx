@@ -1,9 +1,50 @@
-import React from 'react'
+import React, { useState } from 'react'
+import '../CSS/Login.css'
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const navigate = useNavigate();
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        try {
+            const response = await axios.post('http://localhost:4000/api/v1/user/login', {
+                email,
+                password
+            });
+            if (response.data.success) {
+                localStorage.setItem('token', response.data.token);
+                localStorage.setItem('role', response.data.user.role);
+                alert(response.data.message);
+                navigate('/');
+            }
+        } catch (error) {
+            console.log(error);
+            alert(error.response.data.message);
+        }
+    };
     return (
-        <div>
-            <h1>Login</h1>
+        <div className='container'>
+            <form className='container-fluid m-3 p-3 form' onSubmit={handleSubmit}>
+                <h2 className='form-title'>LOGIN NOW</h2>
+                <div className="mb-3 form-component">
+                    <div>
+                        <label className="form-label">Email address</label>
+                        <input type="email" className="form-control" value={email} onChange={event => setEmail(event.target.value)} />
+                    </div>
+                </div>
+                <div className="mb-3 form-component">
+                    <div>
+                        <label className="form-label">Password</label>
+                        <input type="password" className="form-control" value={password} onChange={event => setPassword(event.target.value)} />
+                    </div>
+                </div>
+                <div className="button">
+                    <button type="submit" className="btn btn-primary">Submit</button>
+                </div>
+            </form>
         </div>
     )
 }
