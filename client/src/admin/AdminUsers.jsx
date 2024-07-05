@@ -1,0 +1,65 @@
+import React, { useEffect, useState } from 'react'
+import Sidebar from '../components/Sidebar'
+import '../CSS/AdminUsers.css'
+import axios from 'axios';
+
+const AdminUsers = () => {
+    const [users, setUsers] = useState([]);
+    const getUsers = async () => {
+        try {
+            const response = await axios.get('http://localhost:4000/api/v1/admin/users');
+            if (response.data.success) {
+                setUsers(response.data.users);
+            }
+        } catch (error) {
+            console.log(error);
+            alert(error.response.data.message);
+        }
+    };
+    useEffect(() => {
+        getUsers();
+    }, []);
+    return (
+        <div className='dashboard'>
+            <div className='left-side'>
+                <Sidebar />
+            </div>
+            <div className='table-side'>
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th className='users' colSpan={7}>All Users</th>
+                        </tr>
+                        <tr>
+                            <th scope="col">Sr</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">Age</th>
+                            <th scope="col">Registered as</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            users.map((user, index) => (
+                                <tr>
+                                    <td>{index + 1}.</td>
+                                    <td>{user.firstName} {user.lastName}</td>
+                                    <td>{user.email}</td>
+                                    <td>{user.phone}</td>
+                                    <td>{user.address}</td>
+                                    <td>{user.age}</td>
+                                    <td>{user.role === "0" ? "Customer" : user.role === "1" ? "Farmer" : "Admin"}</td>
+                                </tr>
+                            ))
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    )
+}
+
+export default AdminUsers

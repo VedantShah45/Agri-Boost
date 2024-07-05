@@ -11,6 +11,10 @@ import Shop from './pages/Shop'
 import Login from './pages/Login'
 import Policy from './pages/Policy'
 import Profile from './pages/Profile'
+import AdminDashboard from './admin/AdminDashboard'
+import AdminRegister from './admin/AdminRegister'
+import AdminUsers from './admin/AdminUsers'
+import AdminUserManage from './admin/AdminUserManage'
 
 const App = () => {
   return (
@@ -24,7 +28,11 @@ const App = () => {
         <Route path='/shop' element={<Shop />} />
         <Route path='/login' element={<Login />} />
         <Route path='/policy' element={<Policy />} />
-        <Route path='/profile' element={<Profile />} />
+        <Route path='/profile/:id' element={<Profile />} />
+        <Route path='/admin/dashboard' element={<AdminDashboard />} />
+        <Route path='/admin/register' element={<AdminRegister />} />
+        <Route path='/admin/users' element={<AdminUsers />} />
+        <Route path='/admin/users/manage' element={<AdminUserManage />} />
       </Routes>
       <Footer />
     </BrowserRouter>

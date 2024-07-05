@@ -170,6 +170,7 @@ export const loginController = async (request, response) => {
             success: true,
             message: "Login successfull",
             user: {
+                id: user._id,
                 firstName: user.firstName,
                 lastName: user.lastName,
                 email: user.email,
@@ -243,3 +244,35 @@ export const updateCredentialsController = async (req, res) => {
         });
     }
 }
+
+// Get user details controller
+export const getUsersDetailsController = async (request, response) => {
+    try {
+        const id = request.params.id;
+        const user = await userModel.findById({ _id: id });
+        if (!user) {
+            return response.status(400).send({
+                success: false,
+                message: "User not found"
+            });
+        }
+        response.status(201).send({
+            success: true,
+            message: "User fetched",
+            user: {
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+                phone: user.phone,
+                address: user.address,
+                dob: user.dob,
+                age: user.age
+            }
+        })
+    } catch (error) {
+        response.status(500).send({
+            success: false,
+            message: "Some internal server error occured"
+        });
+    }
+};

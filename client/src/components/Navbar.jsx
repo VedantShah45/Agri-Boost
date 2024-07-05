@@ -4,11 +4,14 @@ import { NavLink, useNavigate } from 'react-router-dom'
 
 const Navbar = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [userRole, setUserRole] = useState(null);
     const navigate = useNavigate();
     const checkLogin = () => {
         const token = localStorage.getItem('token');
+        const role = localStorage.getItem('role');
         if (token) {
             setIsLoggedIn(true);
+            setUserRole(role);
         }
     };
     useEffect(() => {
@@ -17,6 +20,7 @@ const Navbar = () => {
     const handleLogOut = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('role');
+        localStorage.removeItem('id');
         setIsLoggedIn(false);
         navigate('/');
     };
@@ -62,9 +66,23 @@ const Navbar = () => {
                         {
                             isLoggedIn ? (
                                 <li className="nav-item">
-                                    <NavLink className="nav-link" to='/profile'>PROFILE</NavLink>
+                                    <NavLink className="nav-link" to={`/profile/${localStorage.getItem('id')}`}>PROFILE</NavLink>
                                 </li>
                             ) : (<></>)
+                        }
+                        {
+                            (isLoggedIn && userRole === '1') && (
+                                <li className="nav-item">
+                                    <NavLink className="nav-link" to='/farmer/dashboard'>DASHBOARD</NavLink>
+                                </li>
+                            )
+                        }
+                        {
+                            (isLoggedIn && userRole === '2') && (
+                                <li className="nav-item">
+                                    <NavLink className="nav-link" to='/admin/dashboard'>DASHBOARD</NavLink>
+                                </li>
+                            )
                         }
                     </ul>
                     <form className="d-flex" role="search">
