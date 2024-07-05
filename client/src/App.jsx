@@ -15,6 +15,7 @@ import AdminDashboard from './admin/AdminDashboard'
 import AdminRegister from './admin/AdminRegister'
 import AdminUsers from './admin/AdminUsers'
 import AdminUserManage from './admin/AdminUserManage'
+import AdminMessages from './admin/AdminMessages'
 
 const App = () => {
   return (
@@ -33,6 +34,7 @@ const App = () => {
         <Route path='/admin/register' element={<AdminRegister />} />
         <Route path='/admin/users' element={<AdminUsers />} />
         <Route path='/admin/users/manage' element={<AdminUserManage />} />
+        <Route path='/admin/messages' element={<AdminMessages />} />
       </Routes>
       <Footer />
     </BrowserRouter>

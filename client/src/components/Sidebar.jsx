@@ -45,7 +45,7 @@ const Sidebar = () => {
                     </div>
                 </li>
                 <li className="nav-items">
-                    <Link className="nav-link" to='/messages'>Messages</Link>
+                    <Link className="nav-link" to='/admin/messages'>Messages</Link>
                 </li>
                 <li className="nav-items">
                     <Link className="nav-link" to='/admin/register'>Register New Admin</Link>

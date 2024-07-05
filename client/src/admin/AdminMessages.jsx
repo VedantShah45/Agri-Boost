@@ -2,16 +2,15 @@ import React, { useEffect, useState } from 'react'
 import Sidebar from '../components/Sidebar'
 import '../CSS/AdminUsers.css'
 import axios from 'axios';
-import { Table } from 'react-bootstrap';
-import { Link } from 'react-router-dom'
+import { Table } from 'react-bootstrap'
 
-const AdminUserManage = () => {
-    const [users, setUsers] = useState([]);
-    const getUsers = async () => {
+const AdminMessages = () => {
+    const [messages, setMessages] = useState([]);
+    const getMessages = async () => {
         try {
-            const response = await axios.get('http://localhost:4000/api/v1/admin/users');
+            const response = await axios.get('http://localhost:4000/api/v1/admin/messages');
             if (response.data.success) {
-                setUsers(response.data.users);
+                setMessages(response.data.messages);
             }
         } catch (error) {
             console.log(error);
@@ -19,14 +18,14 @@ const AdminUserManage = () => {
         }
     };
     useEffect(() => {
-        getUsers();
+        getMessages();
     }, []);
-    const deleteUser = async (id) => {
+    const deleteMessage = async (id) => {
         try {
-            const response = await axios.delete(`http://localhost:4000/api/v1/admin/delete/${id}`);
+            const response = await axios.delete(`http://localhost:4000/api/v1/admin/delete-message/${id}`);
             if (response.data.success) {
                 alert(response.data.message);
-                getUsers();
+                getMessages();
             }
         } catch (error) {
             console.log(error);
@@ -42,33 +41,28 @@ const AdminUserManage = () => {
                 <Table striped bordered hover className='text-center'>
                     <thead>
                         <tr>
-                            <th className='users' colSpan={8}>Manage Users</th>
+                            <th className='users' colSpan={6}>All Messages</th>
                         </tr>
                         <tr>
                             <th scope="col">Sr</th>
-                            <th scope="col">Name</th>
+                            <th scope="col">Sender</th>
                             <th scope="col">Email</th>
                             <th scope="col">Phone</th>
-                            <th scope="col">Address</th>
-                            <th scope="col">Age</th>
-                            <th scope="col">Registered as</th>
+                            <th scope="col">Message</th>
                             <th scope="col">Manage</th>
                         </tr>
                     </thead>
                     <tbody>
                         {
-                            users.map((user, index) => (
+                            messages.map((message, index) => (
                                 <tr>
                                     <td>{index + 1}.</td>
-                                    <td>{user.firstName} {user.lastName}</td>
-                                    <td>{user.email}</td>
-                                    <td>{user.phone}</td>
-                                    <td>{user.address}</td>
-                                    <td>{user.age}</td>
-                                    <td>{user.role === "0" ? "Customer" : user.role === "1" ? "Farmer" : "Admin"}</td>
+                                    <td>{message.firstName} {message.lastName}</td>
+                                    <td>{message.email}</td>
+                                    <td>{message.phone}</td>
+                                    <td>{message.message}</td>
                                     <td>
-                                        <Link to={`/edit-user/${user._id}`} style={{ textDecoration: "none" }}>Edit</Link>
-                                        <button className='btn btn-danger mx-4' onClick={() => deleteUser(user._id)}>Delete</button>
+                                        <button className='btn btn-danger mx-4' onClick={() => deleteMessage(message._id)}>Delete</button>
                                     </td>
                                 </tr>
                             ))
@@ -80,4 +74,4 @@ const AdminUserManage = () => {
     )
 }
 
-export default AdminUserManage
+export default AdminMessages

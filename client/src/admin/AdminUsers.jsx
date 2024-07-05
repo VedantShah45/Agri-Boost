@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Table } from 'react-bootstrap';
 import Sidebar from '../components/Sidebar'
 import '../CSS/AdminUsers.css'
 import axios from 'axios';
@@ -25,7 +26,7 @@ const AdminUsers = () => {
                 <Sidebar />
             </div>
             <div className='table-side'>
-                <table className="table">
+                <Table striped bordered hover className='text-center'>
                     <thead>
                         <tr>
                             <th className='users' colSpan={7}>All Users</th>
@@ -40,7 +41,7 @@ const AdminUsers = () => {
                             <th scope="col">Registered as</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody style={{ minHeight: "20vh" }}>
                         {
                             users.map((user, index) => (
                                 <tr>
@@ -55,8 +56,7 @@ const AdminUsers = () => {
                             ))
                         }
                     </tbody>
-                </table>
-
+                </Table>
             </div>
         </div>
     )

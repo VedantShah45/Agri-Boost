@@ -7,6 +7,7 @@ import { dbConnect } from './database/dbConfig.js'
 import userRouter from './routes/userRoute.js'
 import farmerRouter from './routes/farmerRoute.js'
 import adminRouter from './routes/adminRoute.js'
+import messageRoute from './routes/messageRoute.js'
 
 const app = express();
 config({ path: './config/config.env' });
@@ -26,6 +27,7 @@ app.use(fileUpload({
 app.use('/api/v1/user', userRouter);
 app.use('/api/v1/farmer', farmerRouter);
 app.use('/api/v1/admin', adminRouter);
+app.use('/api/v1/admin', messageRoute);
 
 //Listen to server only when db connected
 dbConnect()
