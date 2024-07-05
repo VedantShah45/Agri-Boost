@@ -6,7 +6,10 @@ const router = express.Router();
 
 // Register user route
 router.post('/register', registerFarmerController);
+//Default endpoint
 router.route('/').get(getAllProducts).post(createProduct)
 router.route('/:id').patch(updateProduct).delete(deleteProduct)
 
 export default router;
+
+

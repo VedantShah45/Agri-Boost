@@ -1,7 +1,8 @@
 import { ProductModel } from "../models/productModel.js"
+import { userModel } from "../models/userModel.js"
 
 export const getAllProducts = async (req, res) => {
-    const id = req.headers.id
+    const id = req.headers.farmer_id
     const products = await ProductModel.find({ seller: id })
     res.json({
         success: true,
@@ -16,13 +17,16 @@ export const createProduct = async (req, res) => {
             return res.status(400).send('Please enter name, description, company and price of the product')
         }
         const tempProduct = req.body
-        tempProduct.seller = req.headers.id
+        tempProduct.seller = req.headers.farmer_id
+        const farmer=await userModel.findOne({_id:req.headers.farmer_id})
+        tempProduct.sellerName=farmer.firstName+' '+farmer.lastName
         const newProduct = await ProductModel.create(tempProduct)
         res.json({
             success: true,
             product: newProduct
         })
     } catch (error) {
+        console.log(error);
         return res.status(400).send({
             success: false,
             message: "Some internal server error occured"
@@ -62,6 +66,8 @@ export const updateProduct = async (req, res) => {
         });
     }
 }
+
+
 
 export const deleteProduct = async (req, res) => {
     try {

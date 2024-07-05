@@ -1,6 +1,8 @@
 import { userModel } from "../models/userModel.js";
 import { comparePassword, hashPassword } from '../helpers/passwordHelper.js'
 import jwt from 'jsonwebtoken'
+import {ReviewModel} from "../models/reviewModel.js"
+import { ProductModel } from "../models/productModel.js"
 
 //Show all users
 export const getllUsersController = async (req, res) => {
@@ -243,3 +245,64 @@ export const updateCredentialsController = async (req, res) => {
         });
     }
 }
+
+export const getAllReviews=async (req,res)=>{
+    try {
+        const reviews=await ReviewModel.find({customer:req.headers.user_id})
+        res.send({
+            success: true,
+            message: `Reviews fetched successfully`,
+            review:reviews,
+        })
+    } catch (error) {
+        return res.status(401).send({
+            success: false,
+            message: "Some internal server error occured"
+        });
+    }
+}
+
+export const postReview=async (req,res)=>{
+    try {
+        const {rating,review}=req.body
+        if(!rating && !review){
+            return res.status(401).send({
+                success: false,
+                message: "Provide either rating or review"
+            });
+        }
+        //Add review and rating
+        const tempReview={rating:rating,review:review}
+        tempReview.product=req.params.id
+        tempReview.customer=req.headers.user_id
+        const prod=await ProductModel.findById(tempReview.product)
+        const cust=await userModel.findById(tempReview.customer)
+        const seller_id=prod.seller
+        const seller=await userModel.findById(seller_id)
+        console.log(cust,prod,seller_id)
+        tempReview.seller=seller
+        tempReview.productName= prod.name
+        tempReview.customerName= cust.firstName+" "+cust.lastName
+        tempReview.sellerName=seller.firstName+" "+cust.lastName
+        const newReview=await ReviewModel.create(tempReview)
+        //Update rating for product
+        const newRating=(prod.ratingCount*prod.rating+newReview.rating)/(prod.ratingCount+1)
+        const newCount=prod.ratingCount+1
+        const newProduct=await ProductModel.findByIdAndUpdate(prod._id,{rating:newRating,ratingCount:newCount},{new:true})
+        //Send response
+        res.send({
+            success: true,
+            message: `Product rated successfully`,
+            product:newProduct,
+            review:newReview,
+        }
+        )
+    } catch (error) {
+        console.log(error);
+        return res.status(401).send({
+            success: false,
+            message: "Some internal server error occured"
+        });
+    }
+}
+

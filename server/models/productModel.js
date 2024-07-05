@@ -20,6 +20,18 @@ const ProductSchema=new mongoose.Schema({
     seller:{
         type:mongoose.Types.ObjectId,
         required:true
+    },
+    sellerName:{
+        type:String,
+        required:true
+    },
+    rating:{
+        type:Number,
+        default:0
+    },
+    ratingCount:{
+        type:Number,
+        default:0
     }
 },{timestamps:true})
 
