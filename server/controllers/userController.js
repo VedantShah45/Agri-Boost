@@ -182,3 +182,34 @@ export const loginController = async (request, response) => {
         });
     }
 };
+
+// Forgot password controller
+export const forgotPasswordController = async (request, response) => {
+    try {
+        const { email, answer, newPassword } = request.body;
+        if (!email || !answer || !newPassword) {
+            return response.status(400).send({
+                success: false,
+                message: "Please provide all details"
+            });
+        }
+        const user = await userModel.findOne({ email, answer });
+        if (!user) {
+            return response.status(400).send({
+                success: false,
+                message: "Invalid email or answer"
+            });
+        }
+        const hashedPassword = await hashPassword(newPassword);
+        await userModel.findByIdAndUpdate(user._id, { password: hashedPassword });
+        response.status(200).send({
+            success: true,
+            message: "Password changed successfully"
+        });
+    } catch (error) {
+        response.status(500).send({
+            success: false,
+            message: "Some internal server error occured"
+        });
+    }
+};
