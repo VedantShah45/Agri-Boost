@@ -2,6 +2,12 @@ import { userModel } from "../models/userModel.js";
 import { comparePassword, hashPassword } from '../helpers/passwordHelper.js'
 import jwt from 'jsonwebtoken'
 
+//Show all users
+export const getllUsersController = async (req, res) => {
+    const users = await userModel.find({})
+    res.status(200).send({ users })
+}
+
 // Register user controller 
 export const registerUserController = async (request, response) => {
     try {
@@ -213,3 +219,27 @@ export const forgotPasswordController = async (request, response) => {
         });
     }
 };
+
+//Update user info
+export const updateCredentialsController = async (req, res) => {
+    try {
+        const id = req.params.id
+        const user = await userModel.findOneAndUpdate({ _id: id }, req.body)
+        if (!user) {
+            return res.status(401).send({
+                success: false,
+                message: "User does not exist"
+            });
+        }
+        res.status(200).send({
+            success: true,
+            message: `User updated successfully`,
+            user: user
+        })
+    } catch (error) {
+        return res.status(401).send({
+            success: false,
+            message: "Some internal server error occured"
+        });
+    }
+}
