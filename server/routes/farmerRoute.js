@@ -11,7 +11,6 @@ router.route('/').get(getAllProducts).post(createProduct)
 router.route('/:id').patch(updateProduct).delete(deleteProduct)
 
 router.route('/review/:id').get(getAllReviews).delete(deleteReviewController)
-
 export default router;
 
 

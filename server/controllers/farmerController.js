@@ -14,31 +14,38 @@ export const getAllProducts = async (req, res) => {
 
 export const createProduct = async (req, res) => {
     try {
+        if (!req.files || Object.keys(req.files).length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: "Product image is required"
+            });
+        }
+        const { image } = req.files
+        const allowedFormats = ["image/png", "image/jpg", "image/jpeg"]
+        if (!allowedFormats.includes(image.mimetype)) {
+            console.log(error);
+            return res.status(400).send({
+                success: false,
+                message: "Image format should be of type .png, .jpg or .jpeg only"
+            });
+        }
         const { name, description, company, price } = req.body
         if (!name || !description || !company || !price) {
             return res.status(400).send('Please enter name, description, company and price of the product')
         }
         const tempProduct = req.body
-        const {image}=request.files
-        const allowedFormats=["image/png","image/jpg","image/jpeg"]
-        if(!allowedFormats.includes(image.mimetype)){
-            console.log(error);
-            return res.status(400).send({
-            success: false,
-            message: "Image format should be of type .png, .jpg or .jpeg only"
-        });
+        const cloudinaryResponse = await cloudinary.uploader.upload(image.tempFilePath)
+        if (!cloudinaryResponse || cloudinaryResponse.error) {
+            console.error("Cloudinary error", cloudinaryResponse.error || "Unknown cloudinary error")
         }
-        const cloudinaryResponse=await cloudinary.uploader.upload(image.tempFilePath)
-        if(!cloudinaryResponse || cloudinaryResponse.error){
-            console.error("Cloudinary error",cloudinaryResponse.error||"Unknown cloudinary error")
-        }
-        tempProduct.image={
-            public_id:cloudinaryResponse.public_id,
-            url:cloudinaryResponse.secure_url
+        tempProduct.image = {
+            public_id: cloudinaryResponse.public_id,
+            url: cloudinaryResponse.secure_url
         }
         tempProduct.seller = req.headers.farmer_id
         const farmer = await userModel.findOne({ _id: req.headers.farmer_id })
         tempProduct.sellerName = farmer.firstName + ' ' + farmer.lastName
+        tempProduct.sellerEmail = farmer.email
         const newProduct = await ProductModel.create(tempProduct)
         res.json({
             success: true,

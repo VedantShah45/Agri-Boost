@@ -25,6 +25,10 @@ const ProductSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    sellerEmail: {
+        type: String,
+        required: true
+    },
     rating: {
         type: Number,
         default: 0
@@ -33,9 +37,9 @@ const ProductSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    image:{
-        url:String,
-        public_id:String,
+    image: {
+        url: String,
+        public_id: String,
     }
 }, { timestamps: true })
 

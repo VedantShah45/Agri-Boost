@@ -261,14 +261,12 @@ export const postReview = async (req, res) => {
         tempReview.product = req.params.id
         tempReview.customer = req.headers.user_id
         const prod = await ProductModel.findById(tempReview.product)
-        console.log(prod);
         const cust = await userModel.findById(tempReview.customer)
-        console.log(cust, cust.firstName, cust.lastName);
         const seller_id = prod.seller
         const seller = await userModel.findById(seller_id)
         tempReview.seller = seller
         tempReview.productName = prod.name
-        tempReview.customerEmail=cust.email
+        tempReview.customerEmail = cust.email
         tempReview.customerName = cust.firstName + " " + cust.lastName
         tempReview.sellerName = seller.firstName + " " + seller.lastName
         const newReview = await ReviewModel.create(tempReview)

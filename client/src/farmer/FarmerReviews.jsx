@@ -44,11 +44,12 @@ const FarmerReviews = () => {
                 <Table striped bordered hover className='text-center' style={{ overflowY: "auto" }}>
                     <thead>
                         <tr>
-                            <th className='users' colSpan={6}>All Reviews</th>
+                            <th className='users' colSpan={7}>All Reviews</th>
                         </tr>
                         <tr>
                             <th scope="col">Sr</th>
                             <th scope="col">Sender</th>
+                            <th scope="col">Email</th>
                             <th scope="col">Product</th>
                             <th scope="col">Rating</th>
                             <th scope="col">Review</th>
@@ -61,6 +62,7 @@ const FarmerReviews = () => {
                                 <tr>
                                     <td>{index + 1}.</td>
                                     <td>{review.customerName}</td>
+                                    <td>{review.customerEmail}</td>
                                     <td>{review.productName}</td>
                                     <td>{review.rating}/5</td>
                                     <td>{review.review}</td>
