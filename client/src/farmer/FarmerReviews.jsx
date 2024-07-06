@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import Sidebar from '../components/Sidebar'
+import '../CSS/AdminDashboard.css'
 import '../CSS/AdminUsers.css'
-import axios from 'axios';
+import SidebarFarmer from '../components/SidebarFarmer'
 import { Table } from 'react-bootstrap'
+import axios from 'axios';
+import { useParams } from 'react-router-dom'
 
-const AdminMessages = () => {
-    const [messages, setMessages] = useState([]);
-    const getMessages = async () => {
+const FarmerReviews = () => {
+    const [reviews, setReviews] = useState([]);
+    const { id } = useParams();
+    const getReviews = async () => {
         try {
-            const response = await axios.get('http://localhost:4000/api/v1/admin/messages');
+            const response = await axios.get(`http://localhost:4000/api/v1/farmer/review/${id}`);
             if (response.data.success) {
-                setMessages(response.data.messages);
+                setReviews(response.data.review);
             }
         } catch (error) {
             console.log(error);
@@ -18,14 +21,14 @@ const AdminMessages = () => {
         }
     };
     useEffect(() => {
-        getMessages();
+        getReviews();
     }, []);
-    const deleteMessage = async (id) => {
+    const deleteReview = async (id) => {
         try {
-            const response = await axios.delete(`http://localhost:4000/api/v1/admin/delete-message/${id}`);
+            const response = await axios.delete(`http://localhost:4000/api/v1/farmer/review/${id}`);
             if (response.data.success) {
                 alert(response.data.message);
-                getMessages();
+                getReviews();
             }
         } catch (error) {
             console.log(error);
@@ -35,34 +38,34 @@ const AdminMessages = () => {
     return (
         <div className='dashboard'>
             <div className='left-side'>
-                <Sidebar />
+                <SidebarFarmer />
             </div>
             <div className='table-side'>
                 <Table striped bordered hover className='text-center' style={{ overflowY: "auto" }}>
                     <thead>
                         <tr>
-                            <th className='users' colSpan={6}>All Messages</th>
+                            <th className='users' colSpan={6}>All Reviews</th>
                         </tr>
                         <tr>
                             <th scope="col">Sr</th>
                             <th scope="col">Sender</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Phone</th>
-                            <th scope="col">Message</th>
-                            <th scope="col">Manage</th>
+                            <th scope="col">Product</th>
+                            <th scope="col">Rating</th>
+                            <th scope="col">Review</th>
+                            <th scope="col">Reply</th>
                         </tr>
                     </thead>
                     <tbody>
                         {
-                            messages.map((message, index) => (
+                            reviews.map((review, index) => (
                                 <tr>
                                     <td>{index + 1}.</td>
-                                    <td>{message.firstName} {message.lastName}</td>
-                                    <td>{message.email}</td>
-                                    <td>{message.phone}</td>
-                                    <td>{message.message}</td>
+                                    <td>{review.customerName}</td>
+                                    <td>{review.productName}</td>
+                                    <td>{review.rating}/5</td>
+                                    <td>{review.review}</td>
                                     <td>
-                                        <button className='btn btn-danger mx-4' onClick={() => deleteMessage(message._id)}>Delete</button>
+                                        <button className='btn btn-danger mx-4' onClick={() => deleteReview(review._id)}>Delete</button>
                                     </td>
                                 </tr>
                             ))
@@ -74,4 +77,4 @@ const AdminMessages = () => {
     )
 }
 
-export default AdminMessages
+export default FarmerReviews

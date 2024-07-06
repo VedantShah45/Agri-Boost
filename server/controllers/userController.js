@@ -247,22 +247,6 @@ export const updateCredentialsController = async (req, res) => {
     }
 }
 
-export const getAllReviews = async (req, res) => {
-    try {
-        const reviews = await ReviewModel.find({ customer: req.headers.user_id })
-        res.send({
-            success: true,
-            message: `Reviews fetched successfully`,
-            review: reviews,
-        })
-    } catch (error) {
-        return res.status(401).send({
-            success: false,
-            message: "Some internal server error occured"
-        });
-    }
-}
-
 export const postReview = async (req, res) => {
     try {
         const { rating, review } = req.body
@@ -277,14 +261,15 @@ export const postReview = async (req, res) => {
         tempReview.product = req.params.id
         tempReview.customer = req.headers.user_id
         const prod = await ProductModel.findById(tempReview.product)
+        console.log(prod);
         const cust = await userModel.findById(tempReview.customer)
+        console.log(cust, cust.firstName, cust.lastName);
         const seller_id = prod.seller
         const seller = await userModel.findById(seller_id)
-        console.log(cust, prod, seller_id)
         tempReview.seller = seller
         tempReview.productName = prod.name
         tempReview.customerName = cust.firstName + " " + cust.lastName
-        tempReview.sellerName = seller.firstName + " " + cust.lastName
+        tempReview.sellerName = seller.firstName + " " + seller.lastName
         const newReview = await ReviewModel.create(tempReview)
         //Update rating for product
         const newRating = (prod.ratingCount * prod.rating + newReview.rating) / (prod.ratingCount + 1)

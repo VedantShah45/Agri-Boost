@@ -1,5 +1,6 @@
 import { ProductModel } from "../models/productModel.js"
 import { userModel } from "../models/userModel.js"
+import { ReviewModel } from "../models/reviewModel.js"
 
 export const getAllProducts = async (req, res) => {
     const id = req.headers.farmer_id
@@ -18,8 +19,8 @@ export const createProduct = async (req, res) => {
         }
         const tempProduct = req.body
         tempProduct.seller = req.headers.farmer_id
-        const farmer=await userModel.findOne({_id:req.headers.farmer_id})
-        tempProduct.sellerName=farmer.firstName+' '+farmer.lastName
+        const farmer = await userModel.findOne({ _id: req.headers.farmer_id })
+        tempProduct.sellerName = farmer.firstName + ' ' + farmer.lastName
         const newProduct = await ProductModel.create(tempProduct)
         res.json({
             success: true,
@@ -96,6 +97,38 @@ export const deleteProduct = async (req, res) => {
         })
     } catch (error) {
         return res.status(400).send({
+            success: false,
+            message: "Some internal server error occured"
+        });
+    }
+}
+
+export const getAllReviews = async (req, res) => {
+    try {
+        const reviews = await ReviewModel.find({ seller: req.params.id })
+        res.send({
+            success: true,
+            message: `Reviews fetched successfully`,
+            review: reviews,
+        })
+    } catch (error) {
+        return res.status(401).send({
+            success: false,
+            message: "Some internal server error occured"
+        });
+    }
+}
+
+export const deleteReviewController = async (req, res) => {
+    try {
+        const id = req.params.id;
+        await ReviewModel.findByIdAndDelete({ _id: id });
+        res.status(200).send({
+            success: true,
+            message: "Review deleted"
+        });
+    } catch (error) {
+        return res.status(500).send({
             success: false,
             message: "Some internal server error occured"
         });

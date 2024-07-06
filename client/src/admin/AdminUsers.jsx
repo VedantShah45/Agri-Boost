@@ -26,7 +26,7 @@ const AdminUsers = () => {
                 <Sidebar />
             </div>
             <div className='table-side'>
-                <Table striped bordered hover className='text-center'>
+                <Table striped bordered hover className='text-center' style={{ overflowY: "auto" }}>
                     <thead>
                         <tr>
                             <th className='users' colSpan={7}>All Users</th>

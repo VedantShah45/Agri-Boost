@@ -1,5 +1,5 @@
 import express from 'express'
-import { forgotPasswordController, getUsersDetailsController, loginController, registerUserController, postReview, getAllReviews } from '../controllers/userController.js';
+import { forgotPasswordController, getUsersDetailsController, loginController, registerUserController, postReview } from '../controllers/userController.js';
 
 const router = express.Router();
 
@@ -13,7 +13,6 @@ router.post('/login', loginController);
 router.put('/forgot-password', forgotPasswordController);
 
 //review endpoint
-router.route('/review').get(getAllReviews)
 router.route('/review/:id').post(postReview)
 
 // Get user details

@@ -16,6 +16,8 @@ import AdminRegister from './admin/AdminRegister'
 import AdminUsers from './admin/AdminUsers'
 import AdminUserManage from './admin/AdminUserManage'
 import AdminMessages from './admin/AdminMessages'
+import FarmerDashboard from './farmer/FarmerDashboard'
+import FarmerReviews from './farmer/FarmerReviews'
 
 const App = () => {
   return (
@@ -35,6 +37,8 @@ const App = () => {
         <Route path='/admin/users' element={<AdminUsers />} />
         <Route path='/admin/users/manage' element={<AdminUserManage />} />
         <Route path='/admin/messages' element={<AdminMessages />} />
+        <Route path='/farmer/dashboard' element={<FarmerDashboard />} />
+        <Route path='/farmer/review/:id' element={<FarmerReviews />} />
       </Routes>
       <Footer />
     </BrowserRouter>
