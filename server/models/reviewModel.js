@@ -21,6 +21,10 @@ const reviewSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    customerEmail:{
+        type:String,
+        required:true
+    },
     sellerName: {
         type: String,
         required: true
