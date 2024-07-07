@@ -40,7 +40,7 @@ const FarmerReviews = () => {
             <div className='left-side'>
                 <SidebarFarmer />
             </div>
-            <div className='table-side'>
+            <div className='right-side'>
                 <Table striped bordered hover className='text-center' style={{ overflowY: "auto" }}>
                     <thead>
                         <tr>

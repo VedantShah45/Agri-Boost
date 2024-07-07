@@ -19,6 +19,10 @@ import AdminMessages from './admin/AdminMessages'
 import FarmerDashboard from './farmer/FarmerDashboard'
 import FarmerReviews from './farmer/FarmerReviews'
 import FarmerProducts from './farmer/FarmerProducts'
+import FarmerAddProduct from './farmer/FarmerAddProduct'
+import FarmerManageProducts from './farmer/FarmerManageProducts'
+import AdminProducts from './admin/AdminProducts'
+import AdminManageProducts from './admin/AdminManageProducts'
 
 const App = () => {
   return (
@@ -36,10 +40,14 @@ const App = () => {
         <Route path='/admin/dashboard' element={<AdminDashboard />} />
         <Route path='/admin/register' element={<AdminRegister />} />
         <Route path='/admin/users' element={<AdminUsers />} />
+        <Route path='/admin/products' element={<AdminProducts />} />
+        <Route path='/admin/manage-products' element={<AdminManageProducts />} />
         <Route path='/admin/users/manage' element={<AdminUserManage />} />
         <Route path='/admin/messages' element={<AdminMessages />} />
         <Route path='/farmer/dashboard' element={<FarmerDashboard />} />
         <Route path='/farmer/products' element={<FarmerProducts />} />
+        <Route path='/farmer/add-product' element={<FarmerAddProduct />} />
+        <Route path='/farmer/manage-product' element={<FarmerManageProducts />} />
         <Route path='/farmer/review/:id' element={<FarmerReviews />} />
       </Routes>
       <Footer />

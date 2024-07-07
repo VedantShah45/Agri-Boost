@@ -29,9 +29,9 @@ export const createProduct = async (req, res) => {
                 message: "Image format should be of type .png, .jpg or .jpeg only"
             });
         }
-        const { name, description, company, price } = req.body
-        if (!name || !description || !company || !price) {
-            return res.status(400).send('Please enter name, description, company and price of the product')
+        const { name, description, company, price, category } = req.body
+        if (!name || !description || !company || !price || !category) {
+            return res.status(400).send('Please enter name, description, company, category and price of the product')
         }
         const tempProduct = req.body
         const cloudinaryResponse = await cloudinary.uploader.upload(image.tempFilePath)

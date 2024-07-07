@@ -1,7 +1,6 @@
 import express from 'express'
-import { getAllProducts, deleteAllProducts, getAllReviews, deleteAllReviews } from '../controllers/adminController.js';
+import { getAllProducts, deleteAllProducts, getAllReviews, deleteAllReviews, deleteProductController, deleteUserController, getAllUsersController } from '../controllers/adminController.js';
 import { registerAdminController, getllUsersController, updateCredentialsController } from '../controllers/userController.js';
-import { deleteUserController, getAllUsersController } from '../controllers/adminController.js';
 
 const router = express.Router();
 
@@ -14,6 +13,9 @@ router.route('/review').get(getAllReviews).delete(deleteAllReviews)
 
 //product endpoint
 router.route('/product').get(getAllProducts).delete(deleteAllProducts)
+
+// delete one product
+router.delete('/delete-product/:id', deleteProductController);
 
 // Get all users
 router.get('/users', getAllUsersController);

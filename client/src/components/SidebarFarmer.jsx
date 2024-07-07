@@ -24,8 +24,8 @@ const SidebarFarmer = () => {
                         </div>
                         <ul className={`dropdown-menu ${isAdminDropdownOpen ? 'show' : ''}`}>
                             <li><Link className="dropdown-item" to='/farmer/products'>All Products</Link></li>
-                            <li><Link className="dropdown-item" to='/link2'>Add Product</Link></li>
-                            <li><Link className="dropdown-item" to='/link3'>Manage Products</Link></li>
+                            <li><Link className="dropdown-item" to='/farmer/add-product'>Add Product</Link></li>
+                            <li><Link className="dropdown-item" to='/farmer/manage-product'>Manage Products</Link></li>
                         </ul>
                     </div>
                 </li>

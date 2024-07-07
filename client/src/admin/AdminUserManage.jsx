@@ -38,7 +38,7 @@ const AdminUserManage = () => {
             <div className='left-side'>
                 <Sidebar />
             </div>
-            <div className='table-side'>
+            <div className='right-side'>
                 <Table striped bordered hover className='text-center' style={{ overflowY: "auto" }}>
                     <thead>
                         <tr>

@@ -103,3 +103,20 @@ export const deleteUserController = async (request, response) => {
         });
     }
 }
+
+// Delete product 
+export const deleteProductController = async (request, response) => {
+    try {
+        const id = request.params.id;
+        await ProductModel.findByIdAndDelete({ _id: id });
+        response.status(200).send({
+            success: true,
+            message: "Product deleted"
+        });
+    } catch (error) {
+        response.status(500).send({
+            success: false,
+            message: "Some internal server error occured"
+        });
+    }
+}
