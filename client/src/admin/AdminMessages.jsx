@@ -8,7 +8,11 @@ const AdminMessages = () => {
     const [messages, setMessages] = useState([]);
     const getMessages = async () => {
         try {
-            const response = await axios.get('http://localhost:4000/api/v1/admin/messages');
+            const response = await axios.get('http://localhost:4000/api/v1/admin/messages', {
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
             if (response.data.success) {
                 setMessages(response.data.messages);
             }
@@ -22,7 +26,11 @@ const AdminMessages = () => {
     }, []);
     const deleteMessage = async (id) => {
         try {
-            const response = await axios.delete(`http://localhost:4000/api/v1/admin/delete-message/${id}`);
+            const response = await axios.delete(`http://localhost:4000/api/v1/admin/delete-message/${id}`, {
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
             if (response.data.success) {
                 alert(response.data.message);
                 getMessages();

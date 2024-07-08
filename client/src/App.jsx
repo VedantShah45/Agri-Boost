@@ -26,6 +26,7 @@ import AdminManageProducts from './admin/AdminManageProducts'
 import EditProfile from './pages/EditProfile'
 import FarmerEditProduct from './farmer/FarmerEditProduct'
 import ForgotPassword from './pages/ForgotPassword'
+import Product from './pages/Product'
 
 const App = () => {
   return (
@@ -40,6 +41,7 @@ const App = () => {
         <Route path='/login' element={<Login />} />
         <Route path='/forgot-password' element={<ForgotPassword />} />
         <Route path='/policy' element={<Policy />} />
+        <Route path='/product/:id' element={<Product />} />
         <Route path='/profile/:id' element={<Profile />} />
         <Route path='/edit-profile/:id' element={<EditProfile />} />
         <Route path='/admin/dashboard' element={<AdminDashboard />} />

@@ -7,7 +7,11 @@ const AdminManageProducts = () => {
     const [products, setProducts] = useState([]);
     const getProducts = async () => {
         try {
-            const response = await axios.get('http://localhost:4000/api/v1/admin/product');
+            const response = await axios.get('http://localhost:4000/api/v1/admin/product', {
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
             if (response.data.success) {
                 setProducts(response.data.products);
             }
@@ -21,7 +25,11 @@ const AdminManageProducts = () => {
     }, []);
     const deleteProduct = async (id) => {
         try {
-            const response = await axios.delete(`http://localhost:4000/api/v1/admin/delete-product/${id}`);
+            const response = await axios.delete(`http://localhost:4000/api/v1/admin/delete-product/${id}`, {
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
             if (response.data.success) {
                 alert(response.data.message);
                 getProducts();

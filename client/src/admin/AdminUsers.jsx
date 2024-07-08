@@ -8,7 +8,11 @@ const AdminUsers = () => {
     const [users, setUsers] = useState([]);
     const getUsers = async () => {
         try {
-            const response = await axios.get('http://localhost:4000/api/v1/admin/users');
+            const response = await axios.get('http://localhost:4000/api/v1/admin/users', {
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
             if (response.data.success) {
                 setUsers(response.data.users);
             }

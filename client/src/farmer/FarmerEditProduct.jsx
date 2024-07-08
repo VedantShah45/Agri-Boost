@@ -24,7 +24,11 @@ const FarmerEditProduct = () => {
     };
     const getProductDetails = async () => {
         try {
-            const response = await axios.get(`http://localhost:4000/api/v1/farmer/${id}`);
+            const response = await axios.get(`http://localhost:4000/api/v1/farmer/${id}`, {
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
             if (response.data.success) {
                 setName(response.data.product.name);
                 setDescription(response.data.product.description);

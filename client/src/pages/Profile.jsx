@@ -14,7 +14,11 @@ const Profile = () => {
     const { id } = useParams();
     const getProfile = async () => {
         try {
-            const response = await axios.get(`http://localhost:4000/api/v1/user/me/${id}`);
+            const response = await axios.get(`http://localhost:4000/api/v1/user/me/${id}`, {
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
             if (response.data.success) {
                 setFirstName(response.data.user.firstName);
                 setLastName(response.data.user.lastName);

@@ -11,7 +11,11 @@ const AdminProducts = () => {
 
     const getProducts = async () => {
         try {
-            const response = await axios.get('http://localhost:4000/api/v1/admin/product');
+            const response = await axios.get('http://localhost:4000/api/v1/admin/product', {
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
             if (response.data.success) {
                 setProducts(response.data.products);
             }

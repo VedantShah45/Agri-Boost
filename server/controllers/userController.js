@@ -193,6 +193,36 @@ export const loginController = async (request, response) => {
     }
 };
 
+// Forgot password controller
+export const forgotPasswordController = async (request, response) => {
+    try {
+        const { email, answer, newPassword } = request.body;
+        if (!email || !answer || !newPassword) {
+            return response.status(400).send({
+                success: false,
+                message: "Please provide all details"
+            });
+        }
+        const user = await userModel.findOne({ email, answer });
+        if (!user) {
+            return response.status(400).send({
+                success: false,
+                message: "Invalid email or answer"
+            });
+        }
+        const hashedPassword = await hashPassword(newPassword);
+        await userModel.findByIdAndUpdate(user._id, { password: hashedPassword });
+        response.status(200).send({
+            success: true,
+            message: "Password changed successfully"
+        });
+    } catch (error) {
+        response.status(500).send({
+            success: false,
+            message: "Some internal server error occured"
+        });
+    }
+};
 
 //Update user info
 export const updateCredentialsController = async (req, res) => {
@@ -217,6 +247,52 @@ export const updateCredentialsController = async (req, res) => {
         });
     }
 }
+
+// Get all products 
+export const getAllProductsController = async (request, response) => {
+    try {
+        const products = await ProductModel.find({});
+        if (!products) {
+            return response.status(400).send({
+                success: false,
+                message: "Products not found"
+            });
+        }
+        response.status(201).send({
+            success: true,
+            message: "Products fetched successfully",
+            products
+        });
+    } catch (error) {
+        return res.status(500).send({
+            success: false,
+            message: "Some internal server error occured"
+        });
+    }
+};
+
+// Get single product
+export const getSingleProduct = async (request, response) => {
+    try {
+        const product = await ProductModel.findById({ _id: request.params.id });
+        if (!product) {
+            return response.status(400).send({
+                success: false,
+                message: "Product not found"
+            });
+        }
+        response.status(201).send({
+            success: true,
+            message: "Product fetched successfully",
+            product
+        });
+    } catch (error) {
+        return res.status(500).send({
+            success: false,
+            message: "Some internal server error occured"
+        });
+    }
+};
 
 export const postReview = async (req, res) => {
     try {

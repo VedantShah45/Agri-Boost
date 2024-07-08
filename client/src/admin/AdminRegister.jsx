@@ -30,6 +30,10 @@ const AdminRegister = () => {
                 phone,
                 address,
                 answer
+            }, {
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('token')}`
+                }
             });
             if (response.data.success) {
                 alert(response.data.message);

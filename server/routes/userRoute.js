@@ -1,10 +1,7 @@
 import express from 'express'
-import { forgotPasswordController, getUsersDetailsController, postReview, updateCredentialsController, addToCart, removeFromCart, getCart } from '../controllers/userController.js';
+import { getUsersDetailsController, postReview, updateCredentialsController, addToCart, removeFromCart, getCart } from '../controllers/userController.js';
 
 const router = express.Router();
-
-// Forgot password route
-router.put('/forgot-password', forgotPasswordController);
 
 // Edit profile
 router.put('/edit-profile/:id', updateCredentialsController);

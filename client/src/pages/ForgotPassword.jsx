@@ -11,7 +11,7 @@ const ForgotPassword = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await axios.put('http://localhost:4000/api/v1/user/forgot-password', {
+            const response = await axios.put('http://localhost:4000/api/v1/forgot-password', {
                 email,
                 answer,
                 newPassword: password
