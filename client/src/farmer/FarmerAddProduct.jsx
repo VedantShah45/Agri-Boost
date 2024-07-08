@@ -33,7 +33,8 @@ const FarmerAddProduct = () => {
             const response = await axios.post('http://localhost:4000/api/v1/farmer/', formData, {
                 headers: {
                     farmer_id: localStorage.getItem('id'),
-                    "Content-Type": "multipart/form-data"
+                    "Content-Type": "multipart/form-data",
+                    authorization: `Bearer ${localStorage.getItem('token')}`
                 }
             });
             if (response.data.success) {

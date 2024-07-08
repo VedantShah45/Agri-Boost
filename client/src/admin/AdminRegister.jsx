@@ -20,7 +20,7 @@ const AdminRegister = () => {
         event.preventDefault();
         try {
             const roleParameter = role === "Admin" ? "admin" : "";
-            const response = await axios.post(`http://localhost:4000/api/v1/user/register/${roleParameter}`, {
+            const response = await axios.post(`http://localhost:4000/api/v1/${roleParameter}/register/`, {
                 firstName,
                 lastName,
                 email,

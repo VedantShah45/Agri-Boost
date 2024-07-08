@@ -11,6 +11,7 @@ const FarmerManageProducts = () => {
             const response = await axios.get('http://localhost:4000/api/v1/farmer', {
                 headers: {
                     farmer_id: localStorage.getItem('id'),
+                    authorization: `Bearer ${localStorage.getItem('token')}`
                 },
             });
             if (response.data.success) {
@@ -28,7 +29,8 @@ const FarmerManageProducts = () => {
         try {
             const response = await axios.delete(`http://localhost:4000/api/v1/farmer/${id}`, {
                 headers: {
-                    id: localStorage.getItem('id')
+                    id: localStorage.getItem('id'),
+                    authorization: `Bearer ${localStorage.getItem('token')}`
                 }
             });
             if (response.data.success) {

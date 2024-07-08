@@ -56,7 +56,8 @@ const FarmerEditProduct = () => {
             const response = await axios.put(`http://localhost:4000/api/v1/farmer/${id}`, formData, {
                 headers: {
                     id: localStorage.getItem('id'),
-                    "Content-Type": "multipart/form-data"
+                    "Content-Type": "multipart/form-data",
+                    authorization: `Bearer ${localStorage.getItem('token')}`
                 }
             });
             if (response.data.success) {

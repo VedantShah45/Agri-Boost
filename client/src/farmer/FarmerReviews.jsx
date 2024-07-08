@@ -11,7 +11,11 @@ const FarmerReviews = () => {
     const { id } = useParams();
     const getReviews = async () => {
         try {
-            const response = await axios.get(`http://localhost:4000/api/v1/farmer/review/${id}`);
+            const response = await axios.get(`http://localhost:4000/api/v1/farmer/review/${id}`, {
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
             if (response.data.success) {
                 setReviews(response.data.review);
             }
@@ -25,7 +29,11 @@ const FarmerReviews = () => {
     }, []);
     const deleteReview = async (id) => {
         try {
-            const response = await axios.delete(`http://localhost:4000/api/v1/farmer/review/${id}`);
+            const response = await axios.delete(`http://localhost:4000/api/v1/farmer/review/${id}`, {
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
             if (response.data.success) {
                 alert(response.data.message);
                 getReviews();

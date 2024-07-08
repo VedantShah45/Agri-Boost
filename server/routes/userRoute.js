@@ -1,19 +1,7 @@
 import express from 'express'
-import { forgotPasswordController, getUsersDetailsController, loginController, registerUserController, postReview, updateCredentialsController, registerFarmerController, registerAdminController } from '../controllers/userController.js';
+import { forgotPasswordController, getUsersDetailsController, postReview, updateCredentialsController, addToCart, removeFromCart, getCart } from '../controllers/userController.js';
 
 const router = express.Router();
-
-// Register user route
-router.post('/register/user', registerUserController);
-
-// Register farmer route
-router.post('/register/farmer', registerFarmerController);
-
-// Register admin route
-router.post('/register/admin', registerAdminController);
-
-// Login user route
-router.post('/login', loginController);
 
 // Forgot password route
 router.put('/forgot-password', forgotPasswordController);
@@ -26,5 +14,9 @@ router.route('/review/:id').post(postReview)
 
 // Get user details
 router.get('/me/:id', getUsersDetailsController);
+
+//cart endpoints
+router.route('/cart/:id').post(addToCart).delete(removeFromCart)
+router.route('/cart').get(getCart)
 
 export default router;

@@ -19,7 +19,7 @@ const Register = () => {
         event.preventDefault();
         try {
             const roleParameter = role === "Customer" ? "user" : "farmer";
-            const response = await axios.post(`http://localhost:4000/api/v1/user/register/${roleParameter}`, {
+            const response = await axios.post(`http://localhost:4000/api/v1/${roleParameter}/register`, {
                 firstName,
                 lastName,
                 email,

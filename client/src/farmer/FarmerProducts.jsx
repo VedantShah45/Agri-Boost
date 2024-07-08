@@ -14,6 +14,7 @@ const FarmerProducts = () => {
             const response = await axios.get('http://localhost:4000/api/v1/farmer', {
                 headers: {
                     farmer_id: localStorage.getItem('id'),
+                    authorization: `Bearer ${localStorage.getItem('token')}`
                 },
             });
             if (response.data.success) {
