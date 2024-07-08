@@ -23,6 +23,9 @@ import FarmerAddProduct from './farmer/FarmerAddProduct'
 import FarmerManageProducts from './farmer/FarmerManageProducts'
 import AdminProducts from './admin/AdminProducts'
 import AdminManageProducts from './admin/AdminManageProducts'
+import EditProfile from './pages/EditProfile'
+import FarmerEditProduct from './farmer/FarmerEditProduct'
+import ForgotPassword from './pages/ForgotPassword'
 
 const App = () => {
   return (
@@ -35,8 +38,10 @@ const App = () => {
         <Route path='/register' element={<Register />} />
         <Route path='/shop' element={<Shop />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/forgot-password' element={<ForgotPassword />} />
         <Route path='/policy' element={<Policy />} />
         <Route path='/profile/:id' element={<Profile />} />
+        <Route path='/edit-profile/:id' element={<EditProfile />} />
         <Route path='/admin/dashboard' element={<AdminDashboard />} />
         <Route path='/admin/register' element={<AdminRegister />} />
         <Route path='/admin/users' element={<AdminUsers />} />
@@ -47,6 +52,7 @@ const App = () => {
         <Route path='/farmer/dashboard' element={<FarmerDashboard />} />
         <Route path='/farmer/products' element={<FarmerProducts />} />
         <Route path='/farmer/add-product' element={<FarmerAddProduct />} />
+        <Route path='/farmer/edit-product/:id' element={<FarmerEditProduct />} />
         <Route path='/farmer/manage-product' element={<FarmerManageProducts />} />
         <Route path='/farmer/review/:id' element={<FarmerReviews />} />
       </Routes>

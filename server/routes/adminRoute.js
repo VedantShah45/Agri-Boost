@@ -5,7 +5,6 @@ import { registerAdminController, getllUsersController, updateCredentialsControl
 const router = express.Router();
 
 // Register user route
-router.route('/register').post(registerAdminController).get(getllUsersController);
 router.route('/:id').patch(updateCredentialsController)
 
 //review endpoint

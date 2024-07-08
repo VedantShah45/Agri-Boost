@@ -62,38 +62,67 @@ export const createProduct = async (req, res) => {
 
 export const updateProduct = async (req, res) => {
     try {
-        const changes = req.body
-        if (!changes) {
-            return
+        const id = req.params.id;
+        const { name, description, company, price, category } = req.body
+        if (!name || !description || !company || !price || !category) {
+            return res.status(400).send('Please enter name, description, company, category and price of the product')
         }
-        const id = req.params.id
-        const product = await ProductModel.findOne({ _id: id })
-        if (!product) {
-            return res.status(400).send({
-                success: false,
-                message: "Product doesn't exist"
-            })
+        const tempProduct = { ...req.body }
+        const { image } = req.files || {}
+        if (image) {
+            const allowedFormats = ["image/png", "image/jpg", "image/jpeg"]
+            if (!allowedFormats.includes(image.mimetype)) {
+                console.log(error);
+                return res.status(400).send({
+                    success: false,
+                    message: "Image format should be of type .png, .jpg or .jpeg only"
+                });
+            }
+            const cloudinaryResponse = await cloudinary.uploader.upload(image.tempFilePath)
+            if (!cloudinaryResponse || cloudinaryResponse.error) {
+                console.error("Cloudinary error", cloudinaryResponse.error || "Unknown cloudinary error")
+            }
+            tempProduct.image = {
+                public_id: cloudinaryResponse.public_id,
+                url: cloudinaryResponse.secure_url
+            }
         }
-        if (product.seller != req.headers.id) {
-            return res.status(400).send({
-                success: false,
-                message: "Can't update product"
-            })
-        }
-        const newProduct = await ProductModel.findOneAndUpdate(product, req.body)
+        const product = await ProductModel.findByIdAndUpdate(id, tempProduct, { new: true });
         res.status(200).send({
             success: true,
-            message: `${newProduct.name} updated`
-        })
+            message: "Product updated",
+            product
+        });
     } catch (error) {
-        return res.status(400).send({
+        return res.status(500).send({
             success: false,
             message: "Some internal server error occured"
         });
     }
 }
 
-
+export const getProductDetails = async (request, response) => {
+    try {
+        const id = request.params.id;
+        const product = await ProductModel.findById({ _id: id });
+        if (!product) {
+            return response.status(400).send({
+                success: false,
+                message: "Product not found"
+            });
+        }
+        response.status(201).send({
+            success: true,
+            message: "Product fetched",
+            product
+        });
+    } catch (error) {
+        return res.status(500).send({
+            success: false,
+            message: "Some internal server error occured"
+        });
+    }
+}
 
 export const deleteProduct = async (req, res) => {
     try {

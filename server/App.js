@@ -13,7 +13,7 @@ const app = express();
 config({ path: './config/config.env' });
 
 app.use(cors({
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true
 }));
 app.use(cookieParser());

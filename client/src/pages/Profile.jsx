@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import '../CSS/Profile.css'
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 const Profile = () => {
     const [firstName, setFirstName] = useState("");
@@ -41,7 +41,7 @@ const Profile = () => {
                 <h2 className="profile-address">Address: {address}</h2>
                 <h2 className="profile-address">Date of Birth: {dob.slice(0, 10)}</h2>
                 <h2 className="profile-address">Age: {age}</h2>
-                <button variant="primary" className="edit-profile-button">Edit Profile</button>
+                <button variant="primary" className="edit-profile-button"><Link to={`/edit-profile/${id}`} style={{ textDecoration: "none", color: "white" }}>Edit Profile</Link></button>
             </div>
         </div>
     )

@@ -1,25 +1,24 @@
 import React, { useState } from 'react'
 import '../CSS/Login.css'
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
-const Login = () => {
+const ForgotPassword = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [answer, setAnswer] = useState("");
     const navigate = useNavigate();
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await axios.post('http://localhost:4000/api/v1/user/login', {
+            const response = await axios.put('http://localhost:4000/api/v1/user/forgot-password', {
                 email,
-                password
+                answer,
+                newPassword: password
             });
             if (response.data.success) {
-                localStorage.setItem('token', response.data.token);
-                localStorage.setItem('role', response.data.user.role);
-                localStorage.setItem('id', response.data.user.id);
                 alert(response.data.message);
-                navigate('/');
+                navigate('/login');
             }
         } catch (error) {
             console.log(error);
@@ -29,26 +28,29 @@ const Login = () => {
     return (
         <div className='container'>
             <form className='container-fluid m-3 p-3 form' onSubmit={handleSubmit}>
-                <h2 className='form-title'>LOGIN NOW</h2>
+                <h2 className='form-title'>CHANGE PASSWORD</h2>
                 <div className="mb-3 form-component">
                     <div>
                         <label className="form-label">Email address</label>
                         <input type="email" className="form-control" value={email} onChange={event => setEmail(event.target.value)} />
                     </div>
+                    <div>
+                        <label className="form-label">Your favorite sport ?</label>
+                        <input type="text" className="form-control" value={answer} onChange={event => setAnswer(event.target.value)} />
+                    </div>
                 </div>
                 <div className="mb-3 form-component">
                     <div>
-                        <label className="form-label">Password</label>
+                        <label className="form-label">New Password</label>
                         <input type="password" className="form-control" value={password} onChange={event => setPassword(event.target.value)} />
                     </div>
                 </div>
                 <div className="button">
-                    <button type="submit" className="btn btn-primary">Login</button>
-                    <button type="submit" className="btn btn-primary mx-4"><Link to={'/forgot-password'} style={{ textDecoration: "none", color: "white" }}>Forgot Password</Link></button>
+                    <button type="submit" className="btn btn-primary">Change Password</button>
                 </div>
             </form>
         </div>
     )
 }
 
-export default Login
+export default ForgotPassword

@@ -314,7 +314,8 @@ export const getUsersDetailsController = async (request, response) => {
                 phone: user.phone,
                 address: user.address,
                 dob: user.dob,
-                age: user.age
+                age: user.age,
+                answer: user.answer
             }
         })
     } catch (error) {

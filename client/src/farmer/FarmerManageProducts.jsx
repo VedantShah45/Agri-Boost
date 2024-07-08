@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import SidebarFarmer from '../components/SidebarFarmer'
 import { Table } from 'react-bootstrap'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 
 const FarmerManageProducts = () => {
     const [products, setProducts] = useState([]);
@@ -73,6 +74,7 @@ const FarmerManageProducts = () => {
                                     <td>{product.company}</td>
                                     <td>{product.rating}/5</td>
                                     <td>
+                                        <button className='btn btn-primary mx-4' ><Link to={`/farmer/edit-product/${product._id}`} style={{ textDecoration: "none", color: "white" }}>Edit</Link></button>
                                         <button className='btn btn-danger mx-4' onClick={() => deleteProduct(product._id)}>Delete</button>
                                     </td>
                                 </tr>
