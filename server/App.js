@@ -8,6 +8,8 @@ import userRouter from './routes/userRoute.js'
 import farmerRouter from './routes/farmerRoute.js'
 import adminRouter from './routes/adminRoute.js'
 import messageRoute from './routes/messageRoute.js'
+import loginregRouter from './routes/loginregRoute.js'
+import authMiddleware from './middleware/authMiddleware.js'
 
 const app = express();
 config({ path: './config/config.env' });
@@ -24,10 +26,12 @@ app.use(fileUpload({
     tempFileDir: '/tmp/'
 }));
 
-app.use('/api/v1/user', userRouter);
-app.use('/api/v1/farmer', farmerRouter);
-app.use('/api/v1/admin', adminRouter);
+app.use('/api/v1',loginregRouter)
+app.use('/api/v1/user',authMiddleware, userRouter);
+app.use('/api/v1/farmer',authMiddleware, farmerRouter);
+app.use('/api/v1/admin',authMiddleware, adminRouter);
 app.use('/api/v1/admin', messageRoute);
+
 
 //Listen to server only when db connected
 dbConnect()

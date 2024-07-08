@@ -3,6 +3,7 @@ import { comparePassword, hashPassword } from '../helpers/passwordHelper.js'
 import jwt from 'jsonwebtoken'
 import { ReviewModel } from "../models/reviewModel.js"
 import { ProductModel } from "../models/productModel.js"
+import { CartModel } from "../models/cartModel.js";
 
 //Show all users
 export const getllUsersController = async (req, res) => {
@@ -324,3 +325,110 @@ export const getUsersDetailsController = async (request, response) => {
         });
     }
 };
+
+export const addToCart=async (req,res)=>{
+    try {
+        const customer=req.headers.user_id
+        const productId=req.params.id
+        const productObject=await ProductModel.findById(productId)
+        const productName=productObject.name
+        const quantity=req.body.quantity || 1
+        const user=await userModel.findById(customer)
+        const customerName=user.firstName +" "+ user.lastName
+        let testObject=await CartModel.findOne({customer:customer})
+        if(!testObject)
+        {
+            let products=[]
+            products.push({name:productName,Id:productId,quantity:quantity})
+            let amount=0
+            for (let i=0;i<products.length;i++){
+                const productObject=await ProductModel.findById(products[i].Id)
+                amount+=productObject.price*quantity
+            }
+            const cartObject={customer:customer,products:products,customerName:customerName,amount:amount}
+            await CartModel.create(cartObject)
+            return res.status(200).send({
+                success:true,
+                message:"Added to cart",
+                cart:cartObject
+            })
+        }
+        else{
+            // Check if the product is already in the cart
+            const existingProduct = testObject.products.find(p => p.Id.toString() === productId);
+
+            if (existingProduct) {
+                // Update the quantity of the existing product
+                existingProduct.quantity += quantity;
+            } else {
+                // Add the new product to the cart
+                testObject.products.push({ name: productName, Id: productId, quantity: quantity });
+            }
+            // Update the total amount
+            testObject.amount += productObject.price * quantity;
+            await testObject.save()
+            return res.status(200).send({
+                success:true,
+                message:"Added to cart",
+                cart:testObject
+            })
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({
+            success: false,
+            message: "Some internal server error occured"
+        });
+    }
+}
+
+export const getCart=async (req,res)=>{
+    try {
+        const cartItems=await CartModel.find({customer:req.headers.user_id})
+        res.status(200).send({
+            success:true,
+            message:"Here is your cart",
+            cartItems:cartItems
+        })
+    } catch (error) {
+        res.status(500).send({
+            success: false,
+            message: "Some internal server error occured"
+        });
+    }
+}
+
+export const removeFromCart=async (req,res)=>{
+    try {
+        let cart=await CartModel.findOne({customer:req.headers.user_id})
+        let productIndex = cart.products.findIndex(product => product.Id == req.params.id);
+        console.log(productIndex);
+        if (productIndex !== -1) {
+            const productObject = await ProductModel.findById(cart.products[productIndex].Id);
+            
+            // Update product quantity in cart
+            cart.products[productIndex].quantity--;
+            cart.amount -= productObject.price;
+            
+            // If quantity is zero, remove product from cart
+            if (cart.products[productIndex].quantity === 0) {
+                cart.products.splice(productIndex, 1); // Remove product from cart array
+            }
+        }
+            
+            // Save the cart
+            await cart.save();
+        res.status(200).send({
+            success:true,
+            message:"Removed from cart",
+            cart:cart
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: "Some internal server error occured"
+        });
+    }
+}
+
