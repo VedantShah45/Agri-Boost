@@ -478,3 +478,27 @@ export const removeFromCart = async (req, res) => {
     }
 }
 
+export const getProductReview=async (req,res)=>{
+    try {
+        const productId=req.params.id
+        const reviews=await ReviewModel.find({product:productId})
+        if(!reviews){
+            console.log(error);
+            res.status(500).send({
+                success: false,
+                message: "No reviews yet"
+            });
+        }
+        res.status(200).send({
+            success: true,
+            message: "Reviews loaded",
+            reviews:reviews
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: "Some internal server error occured"
+        });
+    }
+}
