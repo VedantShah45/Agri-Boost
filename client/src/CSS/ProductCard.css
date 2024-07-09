@@ -1,6 +1,7 @@
 .product-card {
     width: 18rem;
     margin: 15px auto;
+    background: linear-gradient(to bottom, #56ab2f, #a8e063, #f9d423);
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;

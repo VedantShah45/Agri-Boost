@@ -478,11 +478,11 @@ export const removeFromCart = async (req, res) => {
     }
 }
 
-export const getProductReview=async (req,res)=>{
+export const getProductReview = async (req, res) => {
     try {
-        const productId=req.params.id
-        const reviews=await ReviewModel.find({product:productId})
-        if(!reviews){
+        const productId = req.params.id
+        const reviews = await ReviewModel.find({ product: productId })
+        if (!reviews) {
             console.log(error);
             res.status(500).send({
                 success: false,
@@ -492,7 +492,7 @@ export const getProductReview=async (req,res)=>{
         res.status(200).send({
             success: true,
             message: "Reviews loaded",
-            reviews:reviews
+            reviews: reviews
         })
     } catch (error) {
         console.log(error);

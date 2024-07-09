@@ -7,7 +7,7 @@ const router = express.Router();
 router.put('/edit-profile/:id', updateCredentialsController);
 
 //review endpoint
-router.route('/review/:id').post(postReview).get(getProductReview)
+router.route('/review/:id').post(postReview)
 
 // Get user details
 router.get('/me/:id', getUsersDetailsController);

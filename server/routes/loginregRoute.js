@@ -1,4 +1,4 @@
-import { registerFarmerController, registerAdminController, registerUserController, loginController, forgotPasswordController, getAllProductsController, getSingleProduct } from '../controllers/userController.js';
+import { registerFarmerController, registerAdminController, registerUserController, loginController, forgotPasswordController, getAllProductsController, getSingleProduct, getProductReview } from '../controllers/userController.js';
 import express from 'express'
 const router = express.Router()
 
@@ -9,6 +9,8 @@ router.route('/farmer/register').post(registerFarmerController)
 router.route('/admin/register').post(registerAdminController)
 
 router.route('/login').post(loginController);
+
+router.get('/reviews/:id', getProductReview)
 
 router.get('/products', getAllProductsController);
 

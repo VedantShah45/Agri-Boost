@@ -36,30 +36,37 @@ const Product = () => {
     };
     useEffect(() => {
         getProduct();
+        getReviews();
     }, []);
     const [userRating, setUserRating] = useState(5);
     const [review, setReview] = useState("");
     const handleSubmit = async (event) => {
         event.preventDefault();
-        try {
-            const response = await axios.post(`http://localhost:4000/api/v1/user/review/${id}`, {
-                rating: userRating,
-                review
-            }, {
-                headers: {
-                    user_id: localStorage.getItem('id'),
-                    authorization: `Bearer ${localStorage.getItem('token')}`
+        if (!localStorage.getItem('token')) {
+            alert('Please login to leave us a review');
+            navigate('/login');
+        } else {
+            try {
+                const response = await axios.post(`http://localhost:4000/api/v1/user/review/${id}`, {
+                    rating: userRating,
+                    review
+                }, {
+                    headers: {
+                        user_id: localStorage.getItem('id'),
+                        authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                if (response.data.success) {
+                    alert("Thank you for your review");
+                    setUserRating(5);
+                    setReview("");
+                    getProduct();
+                    getReviews();
                 }
-            });
-            if (response.data.success) {
-                alert("Thank you for your review");
-                setUserRating(5);
-                setReview("");
-                getProduct();
+            } catch (error) {
+                console.log(error);
+                alert(error.response.data.message);
             }
-        } catch (error) {
-            console.log(error);
-            alert(error.response.data.message);
         }
     };
     const [quantity, setQuantity] = useState(1);
@@ -88,17 +95,29 @@ const Product = () => {
             }
         }
     };
+    const [reviews, setReviews] = useState([]);
+    const getReviews = async () => {
+        try {
+            const response = await axios.get(`http://localhost:4000/api/v1/reviews/${id}`);
+            if (response.data.success) {
+                setReviews(response.data.reviews);
+            }
+        } catch (error) {
+            console.log(error);
+            alert(error.response.data.message);
+        }
+    };
     return (
-        <div className="container" style={{ height: "140vh" }}>
+        <div className="container" style={{ height: "180vh" }}>
             <div className='product-container'>
                 <div className='product-image'>
-                    <img src={image} alt={name} />
+                    <img src={image} alt={name} style={{ height: "400px", width: "400px" }} />
                     <div className='buy'>
                         <div className="form-group">
                             <label style={{ fontSize: "20px" }}>Quantity</label>
                             <input type="number" placeholder='Quantity' value={quantity} onChange={event => setQuantity(event.target.value)} style={{ width: "150px", padding: "5px", marginLeft: "0" }} />
                         </div>
-                        <button className='btn btn-primary' onClick={addProductToCart} style={{ margin: "10px auto", width: "150px", height: "70px" }}>Buy</button>
+                        <button className='btn btn-primary' onClick={addProductToCart} style={{ margin: "10px auto", width: "150px", height: "70px", backgroundColor: "#546bed" }}>Buy</button>
                     </div>
                 </div>
                 <div className='product-details'>
@@ -115,8 +134,33 @@ const Product = () => {
                     </div>
                 </div>
             </div>
+            <div id="carouselExampleInterval" className="carousel" data-bs-ride="carousel">
+                <h3 className='title' style={{ marginTop: "20px" }}>See reviews</h3>
+                {
+                    reviews.length == 0 ? (<h3 className='title' style={{ marginTop: "20px" }}>No reviews available</h3>) : (
+                        <div className="carousel-inner">
+                            {reviews.map((review, index) => (
+                                <div className={`carousel-item ${index === 0 ? 'active' : ''}`}>
+                                    <div className="review-card">
+                                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-around", width: "100%" }}>
+                                            <img src="/images/defaultuser.jpg" alt="User Icon" style={{ width: "70px", borderRadius: "50%", marginRight: "5px" }} />
+                                            <div style={{ display: "flex", flexDirection: "column" }}>
+                                                <div className="user-name">{review.customerName}</div>
+                                                <p>{review.rating} / 5</p>
+                                            </div>
+                                        </div>
+                                        <div className="review-content">
+                                            <div className="review-text">{review.review}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )
+                }
+            </div>
             <div className="forms-container">
-                <h3>Leave a Review</h3>
+                <h3 className='title'>Leave a Review</h3>
                 <form className='form' onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label htmlFor="rating">Rating:</label>
@@ -129,6 +173,7 @@ const Product = () => {
                     <button type="submit" className='btn btn-primary submit-button'>Submit</button>
                 </form>
             </div>
+
         </div>
     );
 };
