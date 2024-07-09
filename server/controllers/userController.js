@@ -287,7 +287,7 @@ export const getSingleProduct = async (request, response) => {
             product
         });
     } catch (error) {
-        return res.status(500).send({
+        return response.status(500).send({
             success: false,
             message: "Some internal server error occured"
         });
@@ -380,12 +380,14 @@ export const addToCart = async (req, res) => {
         const productObject = await ProductModel.findById(productId)
         const productName = productObject.name
         const quantity = req.body.quantity || 1
+        const price = productObject.price
+        const image = productObject.image.url
         const user = await userModel.findById(customer)
         const customerName = user.firstName + " " + user.lastName
         let testObject = await CartModel.findOne({ customer: customer })
         if (!testObject) {
             let products = []
-            products.push({ name: productName, Id: productId, quantity: quantity })
+            products.push({ name: productName, Id: productId, quantity: quantity, price, image })
             let amount = 0
             for (let i = 0; i < products.length; i++) {
                 const productObject = await ProductModel.findById(products[i].Id)
@@ -408,7 +410,7 @@ export const addToCart = async (req, res) => {
                 existingProduct.quantity += quantity;
             } else {
                 // Add the new product to the cart
-                testObject.products.push({ name: productName, Id: productId, quantity: quantity });
+                testObject.products.push({ name: productName, Id: productId, quantity: quantity, price, image });
             }
             // Update the total amount
             testObject.amount += productObject.price * quantity;
@@ -478,6 +480,41 @@ export const removeFromCart = async (req, res) => {
     }
 }
 
+export const removeWholeItemFromCart = async (req, res) => {
+    try {
+        let cart = await CartModel.findOne({ customer: req.headers.user_id })
+        let productIndex = cart.products.findIndex(product => product.Id == req.params.id);
+        console.log(productIndex);
+        if (productIndex !== -1) {
+            const productObject = await ProductModel.findById(cart.products[productIndex].Id);
+
+            // Update product quantity in cart
+            const quantity = cart.products[productIndex].quantity;
+            cart.products[productIndex].quantity = 0;
+            cart.amount -= productObject.price * quantity;
+
+            // If quantity is zero, remove product from cart
+            if (cart.products[productIndex].quantity === 0) {
+                cart.products.splice(productIndex, 1); // Remove product from cart array
+            }
+        }
+
+        // Save the cart
+        await cart.save();
+        res.status(200).send({
+            success: true,
+            message: "Removed from cart",
+            cart: cart
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: "Some internal server error occured"
+        });
+    }
+}
+
 export const getProductReview = async (req, res) => {
     try {
         const productId = req.params.id
@@ -503,21 +540,21 @@ export const getProductReview = async (req, res) => {
     }
 }
 
-export const searchProduct=async (req,res)=>{
+export const searchProduct = async (req, res) => {
     try {
-        const regex=new RegExp(req.body.name,'i')
+        const regex = new RegExp(req.body.name, 'i')
         console.log(req.body.name);
-        const searchProducts=await ProductModel.find({name:regex})
-        const category=searchProducts[0].category
-        const similarProducts=await ProductModel.find({category:category})
-        const company=searchProducts[0].company
-        const similarCompany=await ProductModel.find({company:company})
+        const searchProducts = await ProductModel.find({ name: regex })
+        const category = searchProducts[0].category
+        const similarProducts = await ProductModel.find({ category: category })
+        const company = searchProducts[0].company
+        const similarCompany = await ProductModel.find({ company: company })
         res.send({
-            success:true,
-            message:"search complete",
-            searchProducts:searchProducts,
-            similarProducts:similarProducts,
-            similarCompany:similarCompany
+            success: true,
+            message: "search complete",
+            searchProducts: searchProducts,
+            similarProducts: similarProducts,
+            similarCompany: similarCompany
         })
     } catch (error) {
         console.log(error);

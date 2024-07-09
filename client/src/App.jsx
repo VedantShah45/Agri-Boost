@@ -27,6 +27,7 @@ import EditProfile from './pages/EditProfile'
 import FarmerEditProduct from './farmer/FarmerEditProduct'
 import ForgotPassword from './pages/ForgotPassword'
 import Product from './pages/Product'
+import Cart from './pages/Cart'
 
 const App = () => {
   return (
@@ -39,6 +40,7 @@ const App = () => {
         <Route path='/register' element={<Register />} />
         <Route path='/shop' element={<Shop />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/cart' element={<Cart />} />
         <Route path='/forgot-password' element={<ForgotPassword />} />
         <Route path='/policy' element={<Policy />} />
         <Route path='/product/:id' element={<Product />} />

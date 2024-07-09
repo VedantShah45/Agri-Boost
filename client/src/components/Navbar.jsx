@@ -71,6 +71,13 @@ const Navbar = () => {
                             ) : (<></>)
                         }
                         {
+                            isLoggedIn ? (
+                                <li className="nav-item">
+                                    <NavLink className="nav-link" to={`/cart`}>CART</NavLink>
+                                </li>
+                            ) : (<></>)
+                        }
+                        {
                             (isLoggedIn && userRole === '1') && (
                                 <li className="nav-item">
                                     <NavLink className="nav-link" to='/farmer/dashboard'>DASHBOARD</NavLink>
