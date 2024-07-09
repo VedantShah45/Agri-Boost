@@ -29,7 +29,7 @@ const ProductCard = ({ product }) => {
                     <Row className="product-price-cart">
                         <Col md={6} className="product-option">
                             <h4>Rating</h4>
-                            <p>{product.rating}/5</p>
+                            <p>{product.rating.toFixed(1)}/5</p>
                         </Col>
                         <Col md={6} className="product-option">
                             <h4>Price</h4>

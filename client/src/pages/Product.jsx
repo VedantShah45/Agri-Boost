@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import '../CSS/Product.css';
 
 const Product = () => {
@@ -63,23 +63,29 @@ const Product = () => {
         }
     };
     const [quantity, setQuantity] = useState(1);
+    const navigate = useNavigate();
     const addProductToCart = async () => {
-        try {
-            const response = await axios.post(`http://localhost:4000/api/v1/user/cart/${id}`, {
-                quantity
-            }, {
-                headers: {
-                    user_id: localStorage.getItem('id'),
-                    authorization: `Bearer ${localStorage.getItem('token')}`
+        if (!localStorage.getItem('token')) {
+            alert("Please login to buy products");
+            navigate('/login');
+        } else {
+            try {
+                const response = await axios.post(`http://localhost:4000/api/v1/user/cart/${id}`, {
+                    quantity
+                }, {
+                    headers: {
+                        user_id: localStorage.getItem('id'),
+                        authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                if (response.data.success) {
+                    alert(response.data.message);
+                    getProduct();
                 }
-            });
-            if (response.data.success) {
-                alert(response.data.message);
-                getProduct();
+            } catch (error) {
+                console.log(error);
+                alert(error.response.data.message);
             }
-        } catch (error) {
-            console.log(error);
-            alert(error.response.data.message);
         }
     };
     return (
