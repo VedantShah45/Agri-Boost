@@ -502,3 +502,28 @@ export const getProductReview = async (req, res) => {
         });
     }
 }
+
+export const searchProduct=async (req,res)=>{
+    try {
+        const regex=new RegExp(req.body.name,'i')
+        console.log(req.body.name);
+        const searchProducts=await ProductModel.find({name:regex})
+        const category=searchProducts[0].category
+        const similarProducts=await ProductModel.find({category:category})
+        const company=searchProducts[0].company
+        const similarCompany=await ProductModel.find({company:company})
+        res.send({
+            success:true,
+            message:"search complete",
+            searchProducts:searchProducts,
+            similarProducts:similarProducts,
+            similarCompany:similarCompany
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: "Some internal server error occured"
+        });
+    }
+}
