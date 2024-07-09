@@ -1,5 +1,5 @@
 import express from 'express'
-import { searchProduct, getProductReview, getUsersDetailsController, postReview, updateCredentialsController, addToCart, removeFromCart, getCart, removeWholeItemFromCart } from '../controllers/userController.js';
+import { getUsersDetailsController, postReview, updateCredentialsController, addToCart, removeFromCart, getCart, removeWholeItemFromCart } from '../controllers/userController.js';
 
 const router = express.Router();
 
@@ -16,8 +16,5 @@ router.get('/me/:id', getUsersDetailsController);
 router.route('/cart/:id').post(addToCart).delete(removeFromCart)
 router.route('/cart').get(getCart)
 router.delete('/cart/delete/:id', removeWholeItemFromCart);
-
-//search endpoints 
-router.route('/search').get(searchProduct)
 
 export default router;

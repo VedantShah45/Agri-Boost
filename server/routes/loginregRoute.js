@@ -1,4 +1,4 @@
-import { registerFarmerController, registerAdminController, registerUserController, loginController, forgotPasswordController, getAllProductsController, getSingleProduct, getProductReview } from '../controllers/userController.js';
+import { registerFarmerController, registerAdminController, registerUserController, loginController, forgotPasswordController, getAllProductsController, getSingleProduct, getProductReview, searchProduct } from '../controllers/userController.js';
 import express from 'express'
 const router = express.Router()
 
@@ -17,5 +17,7 @@ router.get('/products', getAllProductsController);
 router.get('/product/:id', getSingleProduct);
 
 router.route('/forgot-password').put(forgotPasswordController);
+
+router.route('/search').get(searchProduct)
 
 export default router

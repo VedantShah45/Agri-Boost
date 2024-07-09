@@ -542,9 +542,14 @@ export const getProductReview = async (req, res) => {
 
 export const searchProduct = async (req, res) => {
     try {
-        const regex = new RegExp(req.body.name, 'i')
-        console.log(req.body.name);
-        const searchProducts = await ProductModel.find({ name: regex })
+        const regex = new RegExp(req.headers.search, 'i')
+        const searchProducts = await ProductModel.find({
+            $or: [
+                { name: regex },
+                { category: regex },
+                { company: regex }
+            ]
+        })
         const category = searchProducts[0].category
         const similarProducts = await ProductModel.find({ category: category })
         const company = searchProducts[0].company
