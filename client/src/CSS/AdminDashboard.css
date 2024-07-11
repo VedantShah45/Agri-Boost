@@ -24,5 +24,16 @@
 
 .farmer {
     height: 600px;
+    animation: moveUpDown 1s infinite alternate ease-in-out;
     transform: scaleX(-1);
+}
+
+@keyframes moveUpDown {
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(20px);
+    }
 }

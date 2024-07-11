@@ -10,7 +10,7 @@ const FarmerDashboard = () => {
             </div>
             <div className='right-side'>
                 <div>
-                    <h2 className='title'>Welcome to <br /><span className='title-special'>Farmer Dashboard</span></h2>
+                    <h2 className='title' style={{ fontSize: "80px" }}>Welcome to <br /><span className='title-special'>Farmer Dashboard</span></h2>
                 </div>
                 <div>
                     <img src="/images/farmer.png" alt="" className='farmer' />

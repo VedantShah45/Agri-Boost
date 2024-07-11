@@ -18,7 +18,6 @@ const Search = () => {
                 }
             });
             if (response.data.success) {
-                console.log(response);
                 setSearchResults(response.data.searchProducts);
                 setCompany(response.data.searchProducts[0].company);
                 setSimilarProducts(response.data.similarProducts);

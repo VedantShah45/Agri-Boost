@@ -26,7 +26,8 @@ app.use(fileUpload({
     tempFileDir: '/tmp/'
 }));
 
-app.use('/api/v1', loginregRouter)
+app.use('/api/v1', loginregRouter);
+app.use('/api/v1', messageRoute);
 app.use('/api/v1/user', authMiddleware, userRouter);
 app.use('/api/v1/farmer', authMiddleware, farmerRouter);
 app.use('/api/v1/admin', authMiddleware, adminRouter);
