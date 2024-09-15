@@ -7,4 +7,4 @@ Utilized Axios package for seamless frontend-backend communication, enabling rea
 Designed a responsive and visually appealing interface with Bootstrap and React Icons, and managed data using MongoDB and ExpressJS.
 Deployed using vercel and render.
 
-Link : https://agri-boost-frontend.vercel.app/
+Link : https://agri-boost-frontend.vercel.app/ (Make sure you have decent Wi-Fi speed)
